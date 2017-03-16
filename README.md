@@ -1,2 +1,3 @@
-# frankyb_twitter_bot
-A real simple twitter bot for practice with nodejs.
+# frankyb twitter bot
+A real simple twitter bot for practice in node.
+Needs a .env file with all the twitter api access credentials
