@@ -1,43 +1,42 @@
-'use strict';
+var Twit = require('twit');
+var config = require('./config');
+var chalk = require('chalk');
 
-const Twit = require('twit');
-const config = require('./config');
-const chalk = require('chalk');
+var connectColor = chalk.cyan.bold;
+var eventColor = chalk.magenta.bold;
+var successColor = chalk.green.bold;
+var errorColor = chalk.red.bold;
 
-const connectColor = chalk.cyan.bold;
-const eventColor = chalk.magenta.bold;
-const successColor = chalk.green.bold;
-const errorColor = chalk.red.bold;
-
-const Twitter = new Twit({
+var Twitter = new Twit({
   consumer_key: config.twitter.CONSUMER_KEY,
   consumer_secret: config.twitter.CONSUMER_SECRET,
   access_token: config.twitter.ACCESS_TOKEN,
   access_token_secret: config.twitter.ACCESS_TOKEN_SECRET
 });
 
-const stream = Twitter.stream('user');
+var stream = Twitter.stream('user');
 
-stream.on('connect', (req) => {
+stream.on('connect', function(req) {
   console.log(connectColor('Stream connected'));
-});
-stream.on('disconnect', (disconnectMsg) => {
-  console.log('Stream disconnected')
 });
 
 stream.on('follow', followed);
 
+stream.on('disconnect', function(disconnectMsg) {
+  console.log('Stream disconnected')
+});
+
 function followed(event) {
   console.log(eventColor('Follow event is running'));
-  let screenName = event.source.screen_name;
+  var screenName = event.source.screen_name;
   tweet(screenName);
 }
 
 function tweet(name) {
-  let content = {
-    status: `@${name} Thanks for following! #yeswecode #flyeaglesfly`
+  var content = {
+    status: '@' + name + ' Thanks for following! #yeswecode #flyeaglesfly'
   }
-  Twitter.post('statuses/update', content, (err, data, response) => {
+  Twitter.post('statuses/update', content, function(err, data, response) {
     if(err) {
       console.log(errorColor('Error:'), err.message);
     } else {
