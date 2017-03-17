@@ -1,2 +1,2 @@
-work: node bot.js
-heroku ps:scale work=1
+web: node bot.js
+heroku ps:scale web=1
