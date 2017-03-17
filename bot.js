@@ -16,6 +16,23 @@ const Twitter = new Twit({
   access_token_secret: config.twitter.ACCESS_TOKEN_SECRET
 });
 
+const stream = Twitter.stream('user');
+
+stream.on('connect', (req) => {
+  console.log(connectColor('Stream connected'));
+});
+stream.on('disconnect', (disconnectMsg) => {
+  console.log('Stream disconnected')
+});
+
+stream.on('follow', followed);
+
+function followed(event) {
+  console.log(eventColor('Follow event is running'));
+  let screenName = event.source.screen_name;
+  tweet(screenName);
+}
+
 function tweet(name) {
   let content = {
     status: `@${name} Thanks for following! #yeswecode #flyeaglesfly`
@@ -28,17 +45,3 @@ function tweet(name) {
     }
   });
 }
-
-function followed(event) {
-  console.log(eventColor('Follow event is running'));
-  let screenName = event.source.screen_name;
-  tweet(screenName);
-}
-
-const stream = Twitter.stream('user');
-
-stream.on('connect', (req) => {
-  console.log(connectColor('Stream is up and running'));
-});
-
-stream.on('follow', followed);
