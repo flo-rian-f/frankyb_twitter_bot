@@ -1,4 +1,5 @@
-require('dotenv').config();
+// only for dev mode
+// require('dotenv').config();
 
 module.exports = {
   twitter: {
