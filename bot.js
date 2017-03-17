@@ -8,10 +8,10 @@ var successColor = chalk.green.bold;
 var errorColor = chalk.red.bold;
 
 var Twitter = new Twit({
-  consumer_key: config.twitter.CONSUMER_KEY,
-  consumer_secret: config.twitter.CONSUMER_SECRET,
-  access_token: config.twitter.ACCESS_TOKEN,
-  access_token_secret: config.twitter.ACCESS_TOKEN_SECRET
+  consumer_key: config.CONSUMER_KEY,
+  consumer_secret: config.CONSUMER_SECRET,
+  access_token: config.ACCESS_TOKEN,
+  access_token_secret: config.ACCESS_TOKEN_SECRET
 });
 
 var stream = Twitter.stream('user');
