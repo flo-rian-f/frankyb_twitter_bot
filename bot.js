@@ -39,9 +39,7 @@ function tweet(name) {
     status: '@' + name + ' Thanks for following! #yeswecode #flyeaglesfly'
   }
   
-  let targetValidationName = content.status.search(username);
-  
-  if(targetValidationName !== -1) {
+  if(name !== username) {
     Twitter.post('statuses/update', content, (err, data, response) => {
       if(err) {
         console.log(errorColor('Error:'), err.message);
