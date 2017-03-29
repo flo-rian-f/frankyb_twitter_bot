@@ -1,46 +1,55 @@
-var Twit = require('twit');
-var config = require('./config');
-var chalk = require('chalk');
+const Twit = require('twit');
+const config = require('./config');
+const chalk = require('chalk');
 
-var connectColor = chalk.cyan.bold;
-var eventColor = chalk.magenta.bold;
-var successColor = chalk.green.bold;
-var errorColor = chalk.red.bold;
+const connectColor = chalk.cyan.bold;
+const eventColor = chalk.magenta.bold;
+const successColor = chalk.green.bold;
+const errorColor = chalk.red.bold;
 
-var Twitter = new Twit({
+const username = config.USER_NAME;
+
+const Twitter = new Twit({
   consumer_key: config.CONSUMER_KEY,
   consumer_secret: config.CONSUMER_SECRET,
   access_token: config.ACCESS_TOKEN,
   access_token_secret: config.ACCESS_TOKEN_SECRET
 });
 
-var stream = Twitter.stream('user');
+const stream = Twitter.stream('user');
 
-stream.on('connect', function(req) {
+stream.on('connect', (req) => {
   console.log(connectColor('Stream connected'));
 });
 
 stream.on('follow', followed);
 
-stream.on('disconnect', function(disconnectMsg) {
+stream.on('disconnect', (disconnectMsg) => {
   console.log('Stream disconnected')
 });
 
 function followed(event) {
   console.log(eventColor('Follow event is running'));
-  var screenName = event.source.screen_name;
+  let screenName = event.source.screen_name;
   tweet(screenName);
 }
 
 function tweet(name) {
-  var content = {
+  let content = {
     status: '@' + name + ' Thanks for following! #yeswecode #flyeaglesfly'
   }
-  Twitter.post('statuses/update', content, function(err, data, response) {
-    if(err) {
-      console.log(errorColor('Error:'), err.message);
-    } else {
-      console.log(successColor('Success'));
-    }
-  });
+  
+  let targetValidationName = content.status.search(username);
+  
+  if(targetValidationName !== -1) {
+    Twitter.post('statuses/update', content, (err, data, response) => {
+      if(err) {
+        console.log(errorColor('Error:'), err.message);
+      } else {
+        console.log(successColor('Success'));
+      }
+    });
+  } else {
+    console.log('Skipped self tweet.')
+  }
 }
